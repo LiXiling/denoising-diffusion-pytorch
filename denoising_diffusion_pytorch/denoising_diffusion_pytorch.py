@@ -859,6 +859,7 @@ class Trainer(object):
         diffusion_model,
         folder,
         *,
+        dataset=None,
         train_batch_size = 16,
         gradient_accumulate_every = 1,
         augment_horizontal_flip = True,
@@ -912,7 +913,14 @@ class Trainer(object):
 
         # dataset and dataloader
 
-        self.ds = Dataset(folder, self.image_size, augment_horizontal_flip = augment_horizontal_flip, convert_image_to = convert_image_to)
+        if dataset is None:
+            dataset = Dataset(
+                folder,
+                self.image_size,
+                augment_horizontal_flip=augment_horizontal_flip,
+                convert_image_to=convert_image_to,
+            )
+        self.ds = dataset
 
         assert len(self.ds) >= 100, 'you should have at least 100 images in your folder. at least 10k images recommended'
 
